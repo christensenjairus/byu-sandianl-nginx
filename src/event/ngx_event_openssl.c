@@ -1093,6 +1093,7 @@ ngx_ssl_info_callback(const ngx_ssl_conn_t *ssl_conn, int where, int ret)
     {
         time_t        now, time, timeout, conf_timeout;
         SSL_SESSION  *sess;
+        double msRTT;
 
         /*
          * OpenSSL with TLSv1.3 updates the session creation time on
@@ -1114,6 +1115,7 @@ ngx_ssl_info_callback(const ngx_ssl_conn_t *ssl_conn, int where, int ret)
         if (!c->ssl->session_timeout_set && sess) {
             c->ssl->session_timeout_set = 1;
 
+            msRTT = SSL_SESSION_get_rtt(sess);
             now = ngx_time();
             time = SSL_SESSION_get_time(sess);
             timeout = SSL_SESSION_get_timeout(sess);
