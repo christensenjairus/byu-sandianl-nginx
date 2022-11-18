@@ -4927,6 +4927,14 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 
 
 ngx_int_t
+ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
+{
+    s->data = (u_char *) SSL_get_rtt(c->ssl->session);
+    return NGX_OK;
+}
+
+
+ngx_int_t
 ngx_ssl_get_cipher_name(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
     s->data = (u_char *) SSL_get_cipher_name(c->ssl->connection);
@@ -5144,24 +5152,6 @@ ngx_ssl_get_session_id(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     }
 
     ngx_hex_dump(s->data, buf, len);
-
-    return NGX_OK;
-}
-
-ngx_int_t
-ngx_ssl_get_rtt(ngx_connection_t *c, double rtt*)
-{
-    u_char        *buf;
-    SSL_SESSION   *sess;
-    unsigned int   len;
-
-    sess = SSL_get0_session(c->ssl->connection);
-    if (sess == NULL) {
-        s->len = 0;
-        return NGX_OK;
-    }
-
-    &rtt = (u_char *) SSL_SESSION_get_rtt(sess);
 
     return NGX_OK;
 }
