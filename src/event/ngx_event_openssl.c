@@ -4929,9 +4929,9 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    char str[128]; // create string
-    sprintf(str, "%li", SSL_get_rtt(c->ssl->session)); // copy long to string
-    s->data = (u_char *) *str; // copy to string data.
+    // char str[128]; // create string
+    // sprintf(str, "%li", SSL_get_rtt(c->ssl->session)); // copy long to string
+    s->data = SSL_get_rtt(c->ssl->session); // copy to string data.
     return NGX_OK;
 }
 
