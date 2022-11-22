@@ -4929,7 +4929,14 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    s->data = (u_char *) SSL_get_rtt(c->ssl->session);
+    uint64_t *tmp_rtt = malloc(sizeof(uint64_t)); // create mem space to pass to openssl
+    int success = SSL_get_rtt(c->ssl->session, tmp_rtt); // openssl fills in the mem space
+    if (success != 1) {
+        return NGX_ERROR;
+    }
+    memcpy(s->data, tmp_rtt, sizeof(uint64_t));  // copy the data from memory into variable's data
+                                                // might need to sprintf to a u_char
+    free(tmp_rtt);
     return NGX_OK;
 }
 
