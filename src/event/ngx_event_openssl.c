@@ -4935,6 +4935,18 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
+            if (c==NULL){
+                fprintf(rttlogfile, "ngx_connection_t was null in ngx_ssl_get_rtt()\n");
+            }
+            else if (c->ssl == NULL) {
+                fprintf(rttlogfile, "ngx_connection_t->session was null in ngx_ssl_get_rtt()\n");
+            }
+            else if (c->ssl->session == NULL) {
+                fprintf(rttlogfile, "ngx_connection_t->ssl->session was null in ngx_ssl_get_rtt()\n");
+            }
+            else {
+                fprintf(rttlogfile, "Not sure what happened in ngx_ssl_get_rtt()\n");
+            }
             fprintf(rttlogfile, "SSL_get_rtt() failed\n");
             fclose(rttlogfile);
         }
