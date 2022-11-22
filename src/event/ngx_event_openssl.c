@@ -4931,6 +4931,12 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
     // char str[128]; // create string
     // sprintf(str, "%li", SSL_get_rtt(c->ssl->session)); // copy long to string
+    FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+    if(rttlogfile==NULL) perror("Can't open rtt log file");
+    else {
+        fprintf(rttlogfile, "SSL RTT: %s ticks\n", SSL_get_rtt(c->ssl->session));
+        fclose(rttlogfile);
+    }
     s->data = (u_char *) SSL_get_rtt(c->ssl->session); // copy to string data.
     return NGX_OK;
 }
