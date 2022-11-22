@@ -4930,7 +4930,7 @@ ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
     u_char *tmp_rtt = malloc(sizeof(uint64_t)); // create mem space to pass to openssl
-    int success = SSL_get_rtt(c->ssl->session, tmp_rtt); // openssl fills in the mem space
+    int success = SSL_get_rtt(ngx_ssl_get_session(c), tmp_rtt); // openssl fills in the mem space
     if (success != 1) {
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
