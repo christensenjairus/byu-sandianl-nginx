@@ -4930,7 +4930,7 @@ ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
     char str[256]; // create string
-    sprintf(str, "%lld", SSL_get_rtt(c->ssl->session)); // copy to string
+    sprintf(str, "%lli", SSL_get_rtt(c->ssl->session)); // copy to string
     s->data = (u_char *) str; // copy to string data.
     return NGX_OK;
 }
