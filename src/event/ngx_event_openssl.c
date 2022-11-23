@@ -4958,7 +4958,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
                                                 // might need to sprintf to a u_char
     //sprintf((char *) s->data, "%s", tmp_rtt);
     //strcpy((char *) s->data, (char *) tmp_rtt);
-    s->data = (u_char *)"Hi!";
+    s->data = (u_char *) SSL_get_version(c->ssl->connection);
 
     // FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     // if(rttlogfile==NULL) perror("Can't open rtt log file");
