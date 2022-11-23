@@ -4929,8 +4929,8 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    u_char *tmp_rtt = malloc(s->len); // create mem space to pass to openssl
-    int success = SSL_get_rtt(ngx_ssl_get_session(c), tmp_rtt); // openssl fills in the mem space
+    // u_char *tmp_rtt = malloc(s->len); // create mem space to pass to openssl
+    int success = SSL_get_rtt(ngx_ssl_get_session(c), s->data, s->len); // openssl fills in the mem space
     if (success != 1) {
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
@@ -4950,12 +4950,11 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
             fprintf(rttlogfile, "SSL_get_rtt() failed\n");
             fclose(rttlogfile);
         }
-
         return NGX_ERROR;
     }
     
     //s->data = tmp_rtt;
-    memcpy(s->data, tmp_rtt, s->len);  // copy the data from memory into variable's data
+    //memcpy(s->data, tmp_rtt, s->len);  // copy the data from memory into variable's data
                                                 // might need to sprintf to a u_char
     //sprintf((char *) s->data, "%s", tmp_rtt);
     //strcpy((char *) s->data, (char *) tmp_rtt);
@@ -4964,13 +4963,13 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
     else {
-        fprintf(rttlogfile, "SSL RTT from tmp_rtt: %s ticks\n", tmp_rtt);
+        // fprintf(rttlogfile, "SSL RTT from tmp_rtt: %s ticks\n", tmp_rtt);
         fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
         fprintf(rttlogfile, "s->len is: %zu", s->len);
         fclose(rttlogfile);
     }
 
-    free(tmp_rtt);
+    // free(tmp_rtt);
     return NGX_OK;
 }
 
