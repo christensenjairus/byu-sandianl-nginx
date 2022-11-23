@@ -4954,9 +4954,10 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
         return NGX_ERROR;
     }
     
-    s->data = tmp_rtt;
+    //s->data = tmp_rtt;
     //memcpy(s->data, tmp_rtt, sizeof(u_long));  // copy the data from memory into variable's data
                                                 // might need to sprintf to a u_char
+    sprintf((char *) s->data, "%s", tmp_rtt);
 
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
