@@ -4961,7 +4961,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     //memcpy(s->data, tmp_rtt, s->len);  // copy the data from memory into variable's data
                                                 // might need to sprintf to a u_char
     //sprintf((char *) s->data, "%s", tmp_rtt);
-    //strcpy((char *) s->data, (char *) tmp_rtt);
+    // strcpy((char *) s->data, (char *) tmp_rtt);
     
     u_char buf[4096];
     int success = sprintf((char *) buf, "%llu", (unsigned long long) rtt);
@@ -4972,6 +4972,8 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     }
 
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
+    strcpy((char *) s->data, (char *) buf);
+    fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
 
     fprintf(rttlogfile, "Before Len\n");
     // s->len = ngx_strlen(buf);
