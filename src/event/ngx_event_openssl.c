@@ -4964,29 +4964,39 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     // strcpy((char *) s->data, (char *) tmp_rtt);
     
     u_char buf[4096];
-    int success = sprintf((char *) buf, "%llu", (unsigned long long) rtt);
-
-    if (success <= 0) { 
-        fprintf(rttlogfile, "sprinf in ngx_ssl_get_rtt() failed\n");
-        return NGX_ERROR;
-    }
+    /*int success = */sprintf((char *) buf, "%llu", (unsigned long long) rtt);
+    size_t len = ngx_strlen(buf);
 
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
-    // strcpy((char *) s->data, (char *) buf);
-    s->len=strlen((char *) buf);
-    fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
-    fprintf(rttlogfile, "s->data's length: %zu\n", s->len);
 
-    fprintf(rttlogfile, "Before Len\n");
+    // strcpy((char *) s->data, (char *) buf);
+    
+    s->len = len;
+    s->data = ngx_pnalloc(pool,len);
+
+    if (s->data == NULL) {
+        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+        if(rttlogfile==NULL) perror("Can't open rtt log file");
+        else {
+            fprintf(rttlogfile, "s->data in ngx_ssl_get_rtt() is null\n");
+        }
+        return NGX_ERROR;
+    }
+    ngx_memcpy(s->data, buf, len);
+    
+    // fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
+    // fprintf(rttlogfile, "s->data's length: %zu\n", s->len);
+
+    // fprintf(rttlogfile, "Before Len\n");
     // s->len = ngx_strlen(buf);
     // if (s->len < 1) {
     //     fprintf(rttlogfile, "Len is less than 1\n");
     //     return NGX_ERROR;
     // }
     // fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
-    s->data = ngx_pnalloc(pool, s->len);
+    //s->data = ngx_pnalloc(pool, s->len);
 
-    fprintf(rttlogfile, "Middle of function\n");
+    // fprintf(rttlogfile, "Middle of function\n");
 
     // if (s->data == NULL) {
     //     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
@@ -5000,7 +5010,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     //     fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
     //     fprintf(rttlogfile, "Data: %s ticks\n", s->data);
 
-    ngx_memcpy(s->data, buf, s->len);
+    // ngx_memcpy(s->data, buf, s->len); 
     fclose(rttlogfile);
     return NGX_OK;
 }
