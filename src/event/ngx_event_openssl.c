@@ -4958,17 +4958,18 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     //sprintf((char *) s->data, "%s", tmp_rtt);
     //strcpy((char *) s->data, (char *) tmp_rtt);
     
-    u_char buf[4096];
-    int success = sprintf((char *) buf, "%llu", (unsigned long long) rtt);
+    u_char buf[4096] = "Hi!";
+    //int success = sprintf((char *) buf, "%llu", (unsigned long long) rtt);
+    
 
-    if (success <= 0) { 
-        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
-        if(rttlogfile==NULL) perror("Can't open rtt log file");
-        else {
-            fprintf(rttlogfile, "sprinf in ngx_ssl_get_rtt() failed\n");
-        }
-        return NGX_ERROR;
-    }
+    // if (success <= 0) { 
+    //     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+    //     if(rttlogfile==NULL) perror("Can't open rtt log file");
+    //     else {
+    //         fprintf(rttlogfile, "sprinf in ngx_ssl_get_rtt() failed\n");
+    //     }
+    //     return NGX_ERROR;
+    // }
 
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
