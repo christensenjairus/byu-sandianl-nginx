@@ -4974,13 +4974,13 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
 
     fprintf(rttlogfile, "Before Len\n");
-    s->len = ngx_strlen(buf);
-    if (s->len < 1) {
-        fprintf(rttlogfile, "Len is less than 1\n");
-        return NGX_ERROR;
-    }
-    fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
-    s->data = ngx_pnalloc(pool, s->len);
+    // s->len = ngx_strlen(buf);
+    // if (s->len < 1) {
+    //     fprintf(rttlogfile, "Len is less than 1\n");
+    //     return NGX_ERROR;
+    // }
+    // fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
+    // s->data = ngx_pnalloc(pool, s->len);
 
     fprintf(rttlogfile, "Middle of function\n");
 
