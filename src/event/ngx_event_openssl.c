@@ -4962,14 +4962,31 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
     else {
-        fprintf(rttlogfile, "SSL RTT from rtt: %" PRIu64 "ticks\n", rtt);
+        fprintf(rttlogfile, "SSL RTT from rtt: %" PRIu64 " ticks\n", rtt);
         fclose(rttlogfile);
     }
 
-    int success = sprintf((char *) s->data, "%" PRIu64 "", rtt);
-    if (success <= 0) return 0;
+    u_char buf[4096];
+    int success = sprintf((char *) buf, "%llu", (unsigned long long) rtt);
 
-    // free(tmp_rtt);
+    if (success <= 0) { 
+        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+        if(rttlogfile==NULL) perror("Can't open rtt log file");
+        else {
+            fprintf(rttlogfile, "sprinf in ngx_ssl_get_rtt() failed\n");
+        }
+        return NGX_ERROR;
+    }
+
+
+    s->len = ngx_strlen(buf);
+    s->data = ngx_pnalloc(pool, s->len);
+    if (s->data == NULL) {
+        return NGX_ERROR;
+    }
+
+    ngx_memcpy(s->data, buf, s->len);
+
     return NGX_OK;
 }
 
