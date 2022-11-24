@@ -361,7 +361,7 @@ static ngx_http_variable_t  ngx_http_ssl_vars[] = {
     { ngx_string("ssl_server_name"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_server_name, NGX_HTTP_VAR_CHANGEABLE, 0 },
 
-    { ngx_string("ssl_rtt"), NULL, ngx_http_ssl_static_variable,
+    { ngx_string("ssl_rtt"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_rtt, NGX_HTTP_VAR_CHANGEABLE, 0 },
 
     { ngx_string("ssl_alpn_protocol"), NULL, ngx_http_ssl_variable,
