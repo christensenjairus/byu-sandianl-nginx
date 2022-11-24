@@ -4973,7 +4973,9 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
     strcpy((char *) s->data, (char *) buf);
+    s->len=strlen((char *) buf);
     fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
+    fprintf(rttlogfile, "s->data's length: %zu\n", s->len);
 
     fprintf(rttlogfile, "Before Len\n");
     // s->len = ngx_strlen(buf);
