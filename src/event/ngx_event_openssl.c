@@ -4973,8 +4973,10 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
 
-    // s->len = ngx_strlen(buf);
-    // s->data = ngx_pnalloc(pool, s->len);
+    s->len = ngx_strlen(buf);
+    s->data = ngx_pnalloc(pool, s->len);
+
+    fprintf(rttlogfile, "Middle of function\n");
 
     // if (s->data == NULL) {
     //     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
