@@ -4969,24 +4969,24 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
         return NGX_ERROR;
     }
 
-    s->len = ngx_strlen(buf);
-    s->data = ngx_pnalloc(pool, s->len);
+    // s->len = ngx_strlen(buf);
+    // s->data = ngx_pnalloc(pool, s->len);
 
-    if (s->data == NULL) {
-        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
-        if(rttlogfile==NULL) perror("Can't open rtt log file");
-        else {
-            fprintf(rttlogfile, "s->data in ngx_ssl_get_rtt() is null\n");
-        }
-        return NGX_ERROR;
-    }
+    // if (s->data == NULL) {
+    //     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+    //     if(rttlogfile==NULL) perror("Can't open rtt log file");
+    //     else {
+    //         fprintf(rttlogfile, "s->data in ngx_ssl_get_rtt() is null\n");
+    //     }
+    //     return NGX_ERROR;
+    // }
 
-        fprintf(rttlogfile, "SSL RTT from rtt: %llu ticks\n", (unsigned long long) rtt);
-        fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
-        fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
-        fprintf(rttlogfile, "Data: %s ticks\n", s->data);
+    //     fprintf(rttlogfile, "SSL RTT from rtt: %llu ticks\n", (unsigned long long) rtt);
+    //     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
+    //     fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
+    //     fprintf(rttlogfile, "Data: %s ticks\n", s->data);
 
-    ngx_memcpy(s->data, buf, s->len);
+    // ngx_memcpy(s->data, buf, s->len);
     fclose(rttlogfile);
     return NGX_OK;
 }
