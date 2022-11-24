@@ -4972,7 +4972,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     }
 
     fprintf(rttlogfile, "SSL RTT from buf: %s ticks\n", buf);
-    strcpy((char *) s->data, (char *) buf);
+    // strcpy((char *) s->data, (char *) buf);
     s->len=strlen((char *) buf);
     fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
     fprintf(rttlogfile, "s->data's length: %zu\n", s->len);
@@ -4984,7 +4984,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     //     return NGX_ERROR;
     // }
     // fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
-    // s->data = ngx_pnalloc(pool, s->len);
+    s->data = ngx_pnalloc(pool, s->len);
 
     fprintf(rttlogfile, "Middle of function\n");
 
@@ -5000,7 +5000,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     //     fprintf(rttlogfile, "Len: %zu ticks\n", s->len);
     //     fprintf(rttlogfile, "Data: %s ticks\n", s->data);
 
-    // ngx_memcpy(s->data, buf, s->len);
+    ngx_memcpy(s->data, buf, s->len);
     fclose(rttlogfile);
     return NGX_OK;
 }
