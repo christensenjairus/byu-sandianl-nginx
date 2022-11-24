@@ -4929,9 +4929,8 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    // u_char *tmp_rtt = malloc(); // create mem space to pass to openssl
-    int success = SSL_get_rtt(ngx_ssl_get_session(c), s->data); // openssl fills in the mem space
-    if (success != 1) {
+    uint64_t rtt = SSL_get_rtt(ngx_ssl_get_session(c));
+    if (rtt < 1) {
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
@@ -4963,11 +4962,12 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
     else {
-        // fprintf(rttlogfile, "SSL RTT from tmp_rtt: %s ticks\n", tmp_rtt);
-        fprintf(rttlogfile, "SSL RTT from s->data: %s ticks\n", s->data);
-        fprintf(rttlogfile, "s->len is: %zu", s->len);
+        fprintf(rttlogfile, "SSL RTT from rtt: %llu ticks\n", rtt);
         fclose(rttlogfile);
     }
+
+    int success = sprintf((char *) s->data, "%llu", rtt);
+    if (success <= 0) return 0;
 
     // free(tmp_rtt);
     return NGX_OK;
