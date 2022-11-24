@@ -4962,11 +4962,11 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
     if(rttlogfile==NULL) perror("Can't open rtt log file");
     else {
-        fprintf(rttlogfile, "SSL RTT from rtt: %llu ticks\n", rtt);
+        fprintf(rttlogfile, "SSL RTT from rtt: %" PRIu64 "ticks\n", rtt);
         fclose(rttlogfile);
     }
 
-    int success = sprintf((char *) s->data, "%llu", rtt);
+    int success = sprintf((char *) s->data, "%" PRIu64 "", rtt);
     if (success <= 0) return 0;
 
     // free(tmp_rtt);
