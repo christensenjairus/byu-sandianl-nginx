@@ -4934,18 +4934,18 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    uint64_t rtt = SSL_get_rtt(ngx_ssl_get_session(c));
-    if (rtt < 1) 
+    long rtt = SSL_get_rtt(ngx_ssl_get_session(c));
+    if (rtt < 1)
         return NGX_ERROR;
-    
+
     u_char buf[100];
-    sprintf((char *) buf, "%llu", (unsigned long long) rtt);
+    sprintf((char *) buf, "%ld", (unsigned long long) rtt);
     size_t len = ngx_strlen(buf);
-    
+
     s->len = len;
     s->data = ngx_pnalloc(pool,len);
 
-    if (s->data == NULL) 
+    if (s->data == NULL)
         return NGX_ERROR;
     ngx_memcpy(s->data, buf, len);
 
