@@ -4939,7 +4939,7 @@ ngx_ssl_get_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
         return NGX_ERROR;
 
     u_char buf[100];
-    sprintf((char *) buf, "%ld", (unsigned long long) rtt);
+    sprintf((char *) buf, "%ld", rtt);
     size_t len = ngx_strlen(buf);
 
     s->len = len;
