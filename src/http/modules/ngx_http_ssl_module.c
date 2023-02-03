@@ -336,6 +336,9 @@ static ngx_http_variable_t  ngx_http_ssl_vars[] = {
     { ngx_string("ssl_protocol"), NULL, ngx_http_ssl_static_variable,
       (uintptr_t) ngx_ssl_get_protocol, NGX_HTTP_VAR_CHANGEABLE, 0 },
 
+    { ngx_string("ssl_rtt"), NULL, ngx_http_ssl_variable,
+      (uintptr_t) ngx_ssl_get_handshake_rtt, NGX_HTTP_VAR_CHANGEABLE, 0 },
+
     { ngx_string("ssl_cipher"), NULL, ngx_http_ssl_static_variable,
       (uintptr_t) ngx_ssl_get_cipher_name, NGX_HTTP_VAR_CHANGEABLE, 0 },
 

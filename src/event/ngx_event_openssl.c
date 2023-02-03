@@ -4930,6 +4930,27 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
     return NGX_OK;
 }
 
+ngx_int_t
+ngx_ssl_get_handshake_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
+{
+    uint64_t rtt = SSL_get_handshake_rtt(c->ssl->connection);
+    if (rtt < 1)
+        return NGX_ERROR;
+
+    u_char buf[64];
+    sprintf((char *)buf, "%" PRId64, rtt);
+    size_t len = ngx_strlen(buf);
+
+    s->len = len;
+    s->data = ngx_pnalloc(pool, len);
+
+    if (s->data == NULL)
+        return NGX_ERROR;
+    ngx_memcpy(s->data, buf, len);
+
+    return NGX_OK;
+}
+
 
 ngx_int_t
 ngx_ssl_get_cipher_name(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
