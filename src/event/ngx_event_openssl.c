@@ -4933,8 +4933,8 @@ ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 ngx_int_t
 ngx_ssl_get_handshake_rtt(ngx_connection_t *c, ngx_pool_t *pool, ngx_str_t *s)
 {
-    uint64_t rtt = SSL_get_handshake_rtt(c->ssl->connection);
-    if (rtt < 1)
+    uint64_t rtt;
+    if (!SSL_get_handshake_rtt(c->ssl->connection, &rtt))
         return NGX_ERROR;
 
     u_char buf[64];
